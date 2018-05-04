@@ -29,6 +29,8 @@ Resources:
           Properties:
             Path: /person/{id}
             Method: get
+  Bucket1:
+    Type: AWS::S3::Bucket
 Outputs:
   URL:
     Description: URL for HTTPS Endpoint
