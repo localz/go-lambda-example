@@ -33,3 +33,7 @@ func GetPerson(id string) (*Person, error) {
 func GetPeople() []Person {
 	return all()
 }
+
+func GetBucket() string {
+  return "lambdadownunder-bucket1-lw3gdih9szrb"
+}
