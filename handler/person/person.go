@@ -10,7 +10,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/nathanmalishev/go-lambda-example/repository"
+	"github.com/localz/go-lambda-example/repository"
 )
 
 // PersonResponse
