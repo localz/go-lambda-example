@@ -29,6 +29,24 @@ Resources:
           Properties:
             Path: /person/{id}
             Method: get
+  GetAllResourceKeys:
+    Type: AWS::Serverless::Function
+    Properties:
+      Policies:
+        - AWSXrayWriteOnlyAccess
+      Handler: dist/handler/media
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /media/projects/{projectId}/resource/{resourceId}/resourcekeys
+            Method: get
+            Environment:
+              Variables:
+                AWS_ACCESS_KEY_ID:
+                AWS_SECRET_ACCESS_KEY:
   Bucket1:
     Type: AWS::S3::Bucket
 Outputs:
