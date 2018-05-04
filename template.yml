@@ -65,6 +65,24 @@ Resources:
           Properties:
             Path: /media/projects/{projectID}/resources/{resourceID}
             Method: get
+  DeleteResourceKeys:
+    Type: AWS::Serverless::Function
+    Environment:
+      Variables:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY:
+    Properties:
+      Policies:
+        - AWSXrayWriteOnlyAccess
+      Handler: dist/handler/DeleteResourceKeys
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /media/projects/{projectID}/resources/{resourceID}
+            Method: delete
   Bucket1:
     Type: AWS::S3::Bucket
 Outputs:

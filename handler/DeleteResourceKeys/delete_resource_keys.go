@@ -6,7 +6,6 @@ import (
 	_ "github.com/aws/aws-xray-sdk-go/xray"
 	"log"
 	"strings"
-	"time"
 
 	"github.com/localz/go-lambda-example/repository"
 
@@ -47,31 +46,28 @@ func handleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 
 	svc := s3.New(sess)
 
-	var urls []string
+	var results []string
 
 	for _, filename := range strings.Split(filenames, ",") {
-		s3req, _ := svc.PutObjectRequest(&s3.PutObjectInput{
+		_, err := svc.DeleteObject(&s3.DeleteObjectInput{
 			Bucket: aws.String(repository.GetBucket()),
 			Key:    aws.String(projectID + "/" + resourceID + "/" + filename),
 		})
 
-		str, err := s3req.Presign(15 * time.Minute)
-
 		if err != nil {
 			log.Println(err)
+			results = append(results, err.Error())
 		}
-
-		urls = append(urls, str)
 	}
 
-	if len(urls) == 0 {
+	if len(results) == 0 {
 		return events.APIGatewayProxyResponse{Body: "[]", StatusCode: 200}, nil
 	}
 
 	buffer := &bytes.Buffer{}
 	e := json.NewEncoder(buffer)
 	e.SetEscapeHTML(false)
-	e.Encode(urls)
+	e.Encode(results)
 
 	return events.APIGatewayProxyResponse{Body: buffer.String(), StatusCode: 200}, nil
 }
