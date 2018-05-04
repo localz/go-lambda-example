@@ -6,8 +6,11 @@ clean:
 
 build: clean
 		@for dir in `ls handler`; do \
-			GOOS=linux go build -o dist/handler/$$dir github.com/nathanmalishev/go-lambda-example/handler/$$dir; \
+			GOOS=linux go build -o dist/handler/$$dir github.com/localz/go-lambda-example/handler/$$dir; \
 		done
+
+gomon:
+	reflex -r '\.go' -s -- sh -c 'make build && make run'
 
 run:
 		sam local start-api
