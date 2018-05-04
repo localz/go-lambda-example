@@ -18,16 +18,16 @@ import (
 )
 
 func handleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	projectId, exists := req.PathParameters["projectId"]
+	projectID, exists := req.PathParameters["projectID"]
 
 	if !exists {
-		return events.APIGatewayProxyResponse{Body: "projectId required", StatusCode: 400}, nil
+		return events.APIGatewayProxyResponse{Body: "projectID required", StatusCode: 400}, nil
 	}
 
-	resourceId, exists := req.PathParameters["resourceId"]
+	resourceID, exists := req.PathParameters["resourceID"]
 
 	if !exists {
-		return events.APIGatewayProxyResponse{Body: "resourceId required", StatusCode: 400}, nil
+		return events.APIGatewayProxyResponse{Body: "resourceID required", StatusCode: 400}, nil
 	}
 
 	sess, err := session.NewSession(&aws.Config{
@@ -38,7 +38,7 @@ func handleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 
 	resp, err := svc.ListObjects(&s3.ListObjectsInput{
 		Bucket: aws.String(repository.GetBucket()),
-		Prefix: aws.String(projectId + "/" + resourceId),
+		Prefix: aws.String(projectID + "/" + resourceID),
 	})
 	if err != nil {
 		log.Println(err)

@@ -31,22 +31,58 @@ Resources:
             Method: get
   GetAllResourceKeys:
     Type: AWS::Serverless::Function
+    Environment:
+      Variables:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY:
     Properties:
       Policies:
         - AWSXrayWriteOnlyAccess
-      Handler: dist/handler/media
+      Handler: dist/handler/GetResourceKeys
       Runtime: go1.x
       Tracing: Active
       Events:
         GetEvent:
           Type: Api
           Properties:
-            Path: /media/projects/{projectId}/resource/{resourceId}/resourcekeys
+            Path: /media/projects/{projectID}/resources/{resourceID}/resourcekeys
             Method: get
-            Environment:
-              Variables:
-                AWS_ACCESS_KEY_ID:
-                AWS_SECRET_ACCESS_KEY:
+  GetUploadUrl:
+    Type: AWS::Serverless::Function
+    Environment:
+      Variables:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY:
+    Properties:
+      Policies:
+        - AWSXrayWriteOnlyAccess
+      Handler: dist/handler/GetUploadUrls
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /media/projects/{projectID}/resources/{resourceID}
+            Method: get
+  DeleteResourceKeys:
+    Type: AWS::Serverless::Function
+    Environment:
+      Variables:
+        AWS_ACCESS_KEY_ID:
+        AWS_SECRET_ACCESS_KEY:
+    Properties:
+      Policies:
+        - AWSXrayWriteOnlyAccess
+      Handler: dist/handler/DeleteResourceKeys
+      Runtime: go1.x
+      Tracing: Active
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /media/projects/{projectID}/resources/{resourceID}
+            Method: delete
   Bucket1:
     Type: AWS::S3::Bucket
 Outputs:
